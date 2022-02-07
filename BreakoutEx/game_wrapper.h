@@ -5,12 +5,17 @@
 //  Created by chen caibin on 2021/10/29.
 //
 
-#include "gles.h"
+#include "glad.h"
+#include <UIKit/UIKit.h>
 
 @interface GameWrapper : NSObject
 - (void)InitWidth:(GLfloat) width Height:(GLfloat) height;
-- (void)ProcessInput:(GLfloat) dt;
+- (void)KeyboardInputWhithKey:(int) key Pressed:(char)pressed;
+- (void)TouchMoveOffsetX:(double)x OffsetY:(double)y;
+- (void)TouchBegan;
+- (void)TouchEnded;
 - (void)Update:(GLfloat)dt;
 - (void)Render;
+- (void)Realease;
 @end
 

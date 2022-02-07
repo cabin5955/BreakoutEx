@@ -1,4 +1,5 @@
-#version 330 core
+#version 300 es
+precision mediump float;
 in vec2 TexCoords;
 out vec4 color;
 
@@ -16,17 +17,20 @@ void main()
     // zero out memory since an out variable is initialized with undefined values by default 
     color = vec4(0.0f);
 
-    vec3 sample[9];
+    vec3 samples[9];
     // sample from texture offsets if using convolution matrix
     if(chaos || shake)
         for(int i = 0; i < 9; i++)
-            sample[i] = vec3(texture(scene, TexCoords.st + offsets[i]));
+            samples[i] = vec3(texture(scene, TexCoords.st + offsets[i]));
 
     // process effects
     if(chaos)
     {           
         for(int i = 0; i < 9; i++)
-            color += vec4(sample[i] * edge_kernel[i], 0.0f);
+        {
+            float ek = float(edge_kernel[i]);
+            color += vec4(samples[i].x * ek, samples[i].y * ek,samples[i].z * ek, 0.0f);
+        }
         color.a = 1.0f;
     }
     else if(confuse)
@@ -36,7 +40,7 @@ void main()
     else if(shake)
     {
         for(int i = 0; i < 9; i++)
-            color += vec4(sample[i] * blur_kernel[i], 0.0f);
+            color += vec4(samples[i] * blur_kernel[i], 0.0f);
         color.a = 1.0f;
     }
     else

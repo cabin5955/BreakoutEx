@@ -8,7 +8,7 @@
 #ifndef sprite_renderer_hpp
 #define sprite_renderer_hpp
 
-#include "gles.h"
+#include "glad.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 

@@ -27,6 +27,21 @@ static bool onKey(GLFMDisplay *display, GLFMKey keyCode, GLFMKeyAction action, i
 
 GameWrapper *wrapper;
 
+double GetDeltaTime ()
+{
+    static double LastClickTicks = 0;
+    double CurrentClickTicks;
+
+    CurrentClickTicks = glfmGetTime ();
+    double sub = CurrentClickTicks - LastClickTicks;
+
+    /* Update LastClickTicks and signal a SingleClick. */
+
+    LastClickTicks = CurrentClickTicks;
+    return  sub;
+}
+
+
 // Main entry point
 void glfmMain(GLFMDisplay *display) {
     ExampleApp *app = calloc(1, sizeof(ExampleApp));
@@ -52,11 +67,21 @@ static bool onTouch(GLFMDisplay *display, int touch, GLFMTouchPhase phase, doubl
     }
     ExampleApp *app = glfmGetUserData(display);
     app->needsRedraw = true;
-    if (phase != GLFMTouchPhaseBegan) {
+    if(phase == GLFMTouchPhaseBegan)
+    {
+        [wrapper TouchBegan];
+    }
+    if(phase == GLFMTouchPhaseEnded)
+    {
+        [wrapper TouchEnded];
+    }
+    if (phase != GLFMTouchPhaseBegan)
+    {
         int width, height;
         glfmGetDisplaySize(display, &width, &height);
-        app->offsetX += 2 * (x - app->lastTouchX) / width;
-        app->offsetY -= 2 * (y - app->lastTouchY) / height;
+        app->offsetX =  x - app->lastTouchX;
+        app->offsetY =  y - app->lastTouchY;
+        [wrapper TouchMoveOffsetX:app->offsetX OffsetY:app->offsetY];
     }
     app->lastTouchX = x;
     app->lastTouchY = y;
@@ -98,7 +123,6 @@ static void onSurfaceCreated(GLFMDisplay *display, int width, int height) {
            api == GLFMRenderingAPIOpenGLES32 ? "ES 3.2" :
            api == GLFMRenderingAPIOpenGLES31 ? "ES 3.1" :
            api == GLFMRenderingAPIOpenGLES3 ? "ES 3.0" : "ES 2.0");
-    
     [wrapper InitWidth:width Height:height];
     glViewport(0, 0, width, height);
     glEnable(GL_BLEND);
@@ -118,17 +142,18 @@ static void onSurfaceDestroyed(GLFMDisplay *display) {
 static void draw(ExampleApp *app, int width, int height) {
     
     // Draw background
-    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     [wrapper Render];
 }
 
 static void onFrame(GLFMDisplay *display) {
     ExampleApp *app = glfmGetUserData(display);
-    if (app->needsRedraw) {
+    //if (app->needsRedraw)
+    {
         app->needsRedraw = false;
         
-        [wrapper Update:0.167f];
+        [wrapper Update:GetDeltaTime()];
         
         int width, height;
         glfmGetDisplaySize(display, &width, &height);
@@ -136,3 +161,4 @@ static void onFrame(GLFMDisplay *display) {
         glfmSwapBuffers(display);
     }
 }
+

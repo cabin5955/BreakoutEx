@@ -65,6 +65,7 @@ Texture2D &ResourceManager::loadTextureFromFile(const GLchar *file, GLboolean al
     }
     // Load image
     int width, height, nrComponents;
+    stbi_convert_iphone_png_to_rgb(1);
     unsigned char* image = stbi_load(file, &width, &height, &nrComponents, 0);
     GLenum format;
     if (nrComponents == 1)
