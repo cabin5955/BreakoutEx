@@ -31,6 +31,13 @@ enum Direction {
     DIR_LEFT
 };
 
+enum SoundEffect{
+    BLEEP,
+    BLEEP2,
+    SOLID,
+    POWERUP,
+};
+
 // Defines a Collision typedef that represents collision data
 typedef std::tuple<GLboolean, Direction, glm::vec2> Collision; // <collision?, what direction?, difference vector center - closest point>
 

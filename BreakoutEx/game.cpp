@@ -15,8 +15,12 @@
 #include "particle_generator.hpp"
 #include "post_processor.hpp"
 
+#include "SimpleAudioEngine.h"
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
+
+using namespace CocosDenshion;
 
 SpriteRenderer  *Renderer;
 TextRenderer        *Text;
@@ -27,6 +31,36 @@ PostProcessor       *Effects;
 
 GLfloat             ShakeTime = 0.0f;
 
+void AudioPlay(int sound){
+    switch (sound) {
+        case BLEEP:
+            SimpleAudioEngine::sharedEngine()->playEffect("bleep.wav", false);
+            break;
+            
+        case BLEEP2:
+            SimpleAudioEngine::sharedEngine()->playEffect("bleep2.wav", false);
+            break;
+            
+        case SOLID:
+            SimpleAudioEngine::sharedEngine()->playEffect("solid.wav", false);
+            break;
+            
+        case POWERUP:
+            SimpleAudioEngine::sharedEngine()->playEffect("powerup.wav", false);
+            break;
+            
+        default:
+            break;
+    }
+}
+
+const GLchar *Game::FullPath(GLchar* des,const GLchar *src)
+{
+    strcpy(des, this->preferPath);
+    strcat(des, src);
+    return des;
+}
+
 Game::Game(GLuint width, GLuint height)
     : State(GAME_ACTIVE), Keys(), Width(width), Height(height)
 {
@@ -36,13 +70,6 @@ Game::Game(GLuint width, GLuint height)
 Game::~Game()
 {
 
-}
-
-const GLchar *Game::FullPath(GLchar* des,const GLchar *src)
-{
-    strcpy(des, this->preferPath);
-    strcat(des, src);
-    return des;
 }
 
 void Game::Init()
@@ -128,6 +155,13 @@ void Game::Init()
     );
     Effects = new PostProcessor(ResourceManager::GetShader("postprocessing"), this->Width*2, this->Height*2);
     this->Lives = 3;
+    
+    SimpleAudioEngine::sharedEngine()->preloadEffect("solid.wav");
+    SimpleAudioEngine::sharedEngine()->preloadEffect("bleep.wav");
+    SimpleAudioEngine::sharedEngine()->preloadEffect("bleep2.wav");
+    SimpleAudioEngine::sharedEngine()->preloadEffect("powerup.wav");
+    SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic("breakout.wav");
+    SimpleAudioEngine::sharedEngine()->playBackgroundMusic("breakout.wav", true);
 }
 
 void Game::Update(GLfloat dt)
@@ -157,6 +191,7 @@ void Game::Update(GLfloat dt)
         {
             this->ResetLevel();
             this->State = GAME_MENU;
+            SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
             //Director::GetInstance()->PushScene(GameOver::GetInstance());
         }
         this->ResetPlayer();
@@ -170,6 +205,7 @@ void Game::Update(GLfloat dt)
         this->ResetPlayer();
         Effects->Chaos = true;
         this->State = GAME_WIN;
+        SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
     }
 }
 
@@ -182,6 +218,7 @@ void Game::DoubleClickShoot()
     else if (this->State == GAME_MENU || this->State == GAME_WIN)
     {
         this->State = GAME_ACTIVE;
+        SimpleAudioEngine::sharedEngine()->playBackgroundMusic("breakout.wav", true);
     }
 }
 
@@ -230,6 +267,10 @@ void Game::Render()
         Effects->EndRender();
         // Render postprocessing quad
         Effects->Render(this->deltaTime);
+        
+        Text->RenderText(L"生命值", 0, 10, 1.5f, glm::vec3(1.0f,1.0f,1.0f));
+        std::stringstream ss; ss << this->Lives;
+        Text->RenderText("Live:"+ss.str(), 200.0f, 10.0f, 1.5f, glm::vec3(1.0f,1.0f,1.0f));
     }
     
     if (this->State == GAME_MENU)
@@ -322,13 +363,13 @@ void Game::DoCollisions()
                 {
                     box.Destroyed = GL_TRUE;
                     this->SpawnPowerUps(box);
-                    //AudioPlay(BLEEP2);
+                    AudioPlay(BLEEP2);
                 }
                 else if(Effects != nullptr)
                 {   // if block is solid, enable shake effect
                     ShakeTime = 0.05f;
                     Effects->Shake = GL_TRUE;
-                    //AudioPlay(SOLID);
+                    AudioPlay(SOLID);
                 }
                 // Collision resolution
                 Direction dir = std::get<1>(collision);
@@ -376,7 +417,7 @@ void Game::DoCollisions()
         // Fix sticky paddle
         Ball->Velocity.y = -1 * abs(Ball->Velocity.y);
         Ball->Stuck = Ball->Sticky;
-        //AudioPlay(BLEEP);
+        AudioPlay(BLEEP);
     }
     for (PowerUp &powerUp : this->PowerUps)
     {
@@ -389,7 +430,7 @@ void Game::DoCollisions()
                 ActivatePowerUp(powerUp);
                 powerUp.Destroyed = GL_TRUE;
                 powerUp.Activated = GL_TRUE;
-                //AudioPlay(POWERUP);
+                AudioPlay(POWERUP);
             }
         }
     }

@@ -45,7 +45,7 @@ void TextRenderer::Load(std::string font, GLuint fontSize)
     // Disable byte-alignment restriction
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     // Then for the first 128 ASCII characters, pre-load/compile their characters and store them
-    wchar_t ch_hanzi[] = L"双击屏幕开始";
+    wchar_t ch_hanzi[] = L"生命值关卡双击屏幕开始";
     for (GLubyte c = 0; c < 128; c++) // lol see what I did there
     {
         // Load character glyph

@@ -29,6 +29,18 @@
 		D24E178C27A6E1D800901431 /* three.lvl in Resources */ = {isa = PBXBuildFile; fileRef = D24E178827A6E1D800901431 /* three.lvl */; };
 		D24E178D27A6E1D800901431 /* four.lvl in Resources */ = {isa = PBXBuildFile; fileRef = D24E178927A6E1D800901431 /* four.lvl */; };
 		D24E178E27A6E1D800901431 /* two.lvl in Resources */ = {isa = PBXBuildFile; fileRef = D24E178A27A6E1D800901431 /* two.lvl */; };
+		D2555AC527B154330000CE9F /* CDOpenALSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = D2555ABC27B154330000CE9F /* CDOpenALSupport.m */; };
+		D2555AC627B154330000CE9F /* CDAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2555ABD27B154330000CE9F /* CDAudioManager.m */; };
+		D2555AC727B154330000CE9F /* CocosDenshion.m in Sources */ = {isa = PBXBuildFile; fileRef = D2555ABF27B154330000CE9F /* CocosDenshion.m */; };
+		D2555AC827B154330000CE9F /* SimpleAudioEngine_objc.m in Sources */ = {isa = PBXBuildFile; fileRef = D2555AC327B154330000CE9F /* SimpleAudioEngine_objc.m */; };
+		D2555AC927B154330000CE9F /* SimpleAudioEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2555AC427B154330000CE9F /* SimpleAudioEngine.mm */; };
+		D2555AD427B159740000CE9F /* powerup.wav in Resources */ = {isa = PBXBuildFile; fileRef = D2555ACD27B159740000CE9F /* powerup.wav */; };
+		D2555AD527B159740000CE9F /* bleep.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D2555ACE27B159740000CE9F /* bleep.mp3 */; };
+		D2555AD627B159740000CE9F /* solid.wav in Resources */ = {isa = PBXBuildFile; fileRef = D2555ACF27B159740000CE9F /* solid.wav */; };
+		D2555AD727B159750000CE9F /* breakout.wav in Resources */ = {isa = PBXBuildFile; fileRef = D2555AD027B159740000CE9F /* breakout.wav */; };
+		D2555AD827B159750000CE9F /* bleep.wav in Resources */ = {isa = PBXBuildFile; fileRef = D2555AD127B159740000CE9F /* bleep.wav */; };
+		D2555AD927B159750000CE9F /* bleep2.wav in Resources */ = {isa = PBXBuildFile; fileRef = D2555AD227B159740000CE9F /* bleep2.wav */; };
+		D2555ADA27B159750000CE9F /* breakout.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D2555AD327B159740000CE9F /* breakout.mp3 */; };
 		D29DF9A1272E6FF90046B2EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D29DF9A0272E6FF90046B2EE /* Assets.xcassets */; };
 		D29DF9A4272E6FF90046B2EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D29DF9A3272E6FF90046B2EE /* main.m */; };
 		D29DF9D2272E70820046B2EE /* texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D29DF9AC272E70820046B2EE /* texture.cpp */; };
@@ -92,6 +104,25 @@
 		D24E178827A6E1D800901431 /* three.lvl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = three.lvl; sourceTree = "<group>"; };
 		D24E178927A6E1D800901431 /* four.lvl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = four.lvl; sourceTree = "<group>"; };
 		D24E178A27A6E1D800901431 /* two.lvl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = two.lvl; sourceTree = "<group>"; };
+		D2555AB827B154330000CE9F /* Export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Export.h; sourceTree = "<group>"; };
+		D2555AB927B154330000CE9F /* SimpleAudioEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleAudioEngine.h; sourceTree = "<group>"; };
+		D2555ABB27B154330000CE9F /* CDConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDConfig.h; sourceTree = "<group>"; };
+		D2555ABC27B154330000CE9F /* CDOpenALSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDOpenALSupport.m; sourceTree = "<group>"; };
+		D2555ABD27B154330000CE9F /* CDAudioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDAudioManager.m; sourceTree = "<group>"; };
+		D2555ABE27B154330000CE9F /* SimpleAudioEngine_objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleAudioEngine_objc.h; sourceTree = "<group>"; };
+		D2555ABF27B154330000CE9F /* CocosDenshion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CocosDenshion.m; sourceTree = "<group>"; };
+		D2555AC027B154330000CE9F /* CDOpenALSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDOpenALSupport.h; sourceTree = "<group>"; };
+		D2555AC127B154330000CE9F /* CDAudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDAudioManager.h; sourceTree = "<group>"; };
+		D2555AC227B154330000CE9F /* CocosDenshion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CocosDenshion.h; sourceTree = "<group>"; };
+		D2555AC327B154330000CE9F /* SimpleAudioEngine_objc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleAudioEngine_objc.m; sourceTree = "<group>"; };
+		D2555AC427B154330000CE9F /* SimpleAudioEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SimpleAudioEngine.mm; sourceTree = "<group>"; };
+		D2555ACD27B159740000CE9F /* powerup.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = powerup.wav; sourceTree = "<group>"; };
+		D2555ACE27B159740000CE9F /* bleep.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bleep.mp3; sourceTree = "<group>"; };
+		D2555ACF27B159740000CE9F /* solid.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = solid.wav; sourceTree = "<group>"; };
+		D2555AD027B159740000CE9F /* breakout.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = breakout.wav; sourceTree = "<group>"; };
+		D2555AD127B159740000CE9F /* bleep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bleep.wav; sourceTree = "<group>"; };
+		D2555AD227B159740000CE9F /* bleep2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bleep2.wav; sourceTree = "<group>"; };
+		D2555AD327B159740000CE9F /* breakout.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = breakout.mp3; sourceTree = "<group>"; };
 		D29DF98D272E6FF80046B2EE /* BreakoutEx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BreakoutEx.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D29DF9A0272E6FF90046B2EE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D29DF9A2272E6FF90046B2EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -157,6 +188,55 @@
 			path = levels;
 			sourceTree = "<group>";
 		};
+		D2555AB627B154330000CE9F /* CocosDenshion */ = {
+			isa = PBXGroup;
+			children = (
+				D2555AB727B154330000CE9F /* include */,
+				D2555ABA27B154330000CE9F /* ios */,
+			);
+			path = CocosDenshion;
+			sourceTree = "<group>";
+		};
+		D2555AB727B154330000CE9F /* include */ = {
+			isa = PBXGroup;
+			children = (
+				D2555AB827B154330000CE9F /* Export.h */,
+				D2555AB927B154330000CE9F /* SimpleAudioEngine.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		D2555ABA27B154330000CE9F /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				D2555ABB27B154330000CE9F /* CDConfig.h */,
+				D2555ABC27B154330000CE9F /* CDOpenALSupport.m */,
+				D2555ABD27B154330000CE9F /* CDAudioManager.m */,
+				D2555ABE27B154330000CE9F /* SimpleAudioEngine_objc.h */,
+				D2555ABF27B154330000CE9F /* CocosDenshion.m */,
+				D2555AC027B154330000CE9F /* CDOpenALSupport.h */,
+				D2555AC127B154330000CE9F /* CDAudioManager.h */,
+				D2555AC227B154330000CE9F /* CocosDenshion.h */,
+				D2555AC327B154330000CE9F /* SimpleAudioEngine_objc.m */,
+				D2555AC427B154330000CE9F /* SimpleAudioEngine.mm */,
+			);
+			path = ios;
+			sourceTree = "<group>";
+		};
+		D2555ACC27B159740000CE9F /* audio */ = {
+			isa = PBXGroup;
+			children = (
+				D2555ACD27B159740000CE9F /* powerup.wav */,
+				D2555ACE27B159740000CE9F /* bleep.mp3 */,
+				D2555ACF27B159740000CE9F /* solid.wav */,
+				D2555AD027B159740000CE9F /* breakout.wav */,
+				D2555AD127B159740000CE9F /* bleep.wav */,
+				D2555AD227B159740000CE9F /* bleep2.wav */,
+				D2555AD327B159740000CE9F /* breakout.mp3 */,
+			);
+			path = audio;
+			sourceTree = "<group>";
+		};
 		D29DF984272E6FF80046B2EE = {
 			isa = PBXGroup;
 			children = (
@@ -177,6 +257,8 @@
 		D29DF98F272E6FF80046B2EE /* BreakoutEx */ = {
 			isa = PBXGroup;
 			children = (
+				D2555ACC27B159740000CE9F /* audio */,
+				D2555AB627B154330000CE9F /* CocosDenshion */,
 				D24E178627A6E1D800901431 /* levels */,
 				D24E174627A6D83B00901431 /* glad.h */,
 				D24E173127A6D83B00901431 /* ball_object.cpp */,
@@ -385,10 +467,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2555AD627B159740000CE9F /* solid.wav in Resources */,
 				D29DF9E5272E70820046B2EE /* simple.vert in Resources */,
+				D2555AD827B159750000CE9F /* bleep.wav in Resources */,
 				D24E178B27A6E1D800901431 /* one.lvl in Resources */,
 				D29DF9DE272E70820046B2EE /* post_processing.vs in Resources */,
 				D2C3022F27A550EA00D3A00C /* default.ttf in Resources */,
+				D2555AD727B159750000CE9F /* breakout.wav in Resources */,
+				D2555ADA27B159750000CE9F /* breakout.mp3 in Resources */,
 				D29DF9DD272E70820046B2EE /* particle.vs in Resources */,
 				D24E177327A6D88400901431 /* powerup_sticky.png in Resources */,
 				D29DF9E1272E70820046B2EE /* simple.frag in Resources */,
@@ -397,6 +483,7 @@
 				D24E177127A6D88400901431 /* background.jpg in Resources */,
 				D29DF9DF272E70820046B2EE /* text_2d.fs in Resources */,
 				D29DF9DC272E70820046B2EE /* sprite.vs in Resources */,
+				D2555AD427B159740000CE9F /* powerup.wav in Resources */,
 				D29DF9D9272E70820046B2EE /* text_2d.vs in Resources */,
 				D24E177D27A6D88400901431 /* powerup_chaos.png in Resources */,
 				D29DF9DA272E70820046B2EE /* sprite.fs in Resources */,
@@ -411,8 +498,10 @@
 				D29DF9DB272E70820046B2EE /* particle.fs in Resources */,
 				D24E178E27A6E1D800901431 /* two.lvl in Resources */,
 				D24E177E27A6D88400901431 /* powerup_confuse.png in Resources */,
+				D2555AD927B159750000CE9F /* bleep2.wav in Resources */,
 				D29DF9D8272E70820046B2EE /* post_processing.fs in Resources */,
 				D24E178C27A6E1D800901431 /* three.lvl in Resources */,
+				D2555AD527B159740000CE9F /* bleep.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,6 +513,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D29DF9A4272E6FF90046B2EE /* main.m in Sources */,
+				D2555AC927B154330000CE9F /* SimpleAudioEngine.mm in Sources */,
+				D2555AC627B154330000CE9F /* CDAudioManager.m in Sources */,
 				D24E174827A6D83B00901431 /* particle_generator.cpp in Sources */,
 				D29DF9E7272E70820046B2EE /* game_wrapper.mm in Sources */,
 				D2C3022627A546C800D3A00C /* text_renderer.cpp in Sources */,
@@ -440,9 +531,12 @@
 				D29DF9E0272E70820046B2EE /* game.cpp in Sources */,
 				D29DF9E6272E70820046B2EE /* stb_image.cpp in Sources */,
 				D24E174F27A6D83B00901431 /* game_level.cpp in Sources */,
+				D2555AC827B154330000CE9F /* SimpleAudioEngine_objc.m in Sources */,
 				D29DF9D3272E70820046B2EE /* resource_manager.cpp in Sources */,
 				D29DF9E3272E70820046B2EE /* glfm_platform_android.c in Sources */,
 				D24E174E27A6D83B00901431 /* sprite_object.cpp in Sources */,
+				D2555AC527B154330000CE9F /* CDOpenALSupport.m in Sources */,
+				D2555AC727B154330000CE9F /* CocosDenshion.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,6 +660,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_STYLE = Automatic;
 				COMPRESS_PNG_FILES = YES;
 				DEVELOPMENT_TEAM = ET9YQ6GB6Y;
@@ -595,6 +690,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_STYLE = Automatic;
 				COMPRESS_PNG_FILES = YES;
 				DEVELOPMENT_TEAM = ET9YQ6GB6Y;
