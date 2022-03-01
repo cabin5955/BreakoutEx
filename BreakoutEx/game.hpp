@@ -9,8 +9,9 @@
 #define game_hpp
 
 #include "glad.h"
-
 #include <vector>
+
+#include "scene.h"
 #include "game_level.hpp"
 #include "ball_object.hpp"
 #include "power_up.h"
@@ -50,7 +51,7 @@ const glm::vec2 INITIAL_BALL_VELOCITY(200.0f, -700.0f);
 // Radius of the ball object
 const GLfloat BALL_RADIUS = 25.0f;
 
-class Game
+class Game:public IScene
 {
 public:
     GLuint Lives;
@@ -64,13 +65,12 @@ public:
     GLchar                 preferPath[1024];
     double                 fps;
     
-    // Constructor/Destructor
-    Game(GLuint width, GLuint height);
-    ~Game();
     // Initialize game state (load all shaders/textures/levels)
-    void Init();
+    void Init(unsigned int width,unsigned int height);
+    void OnEnter();
+    void OnExit();
     // GameLoop
-    void ProcessInput(GLfloat dt);
+    void KeyboardInput(int virtual_key, char pressed);
     void Update(GLfloat dt);
     void Render();
     
@@ -85,9 +85,34 @@ public:
     
     void Release();
     
+    static Game* GetInstance()
+    {
+        if(s_instance == nullptr)
+        {
+            s_instance = new Game();
+        }
+        return s_instance;
+    }
+    
 private:
     const GLchar *FullPath(GLchar* des,const GLchar *src);
     GLfloat deltaTime;
+
+    Game()
+    {
+        //std::cout << "Construct Game" << std::endl;
+        this->State = GAME_MENU;
+    }
+    
+    ~Game()
+    {
+        //std::cout << "Destruct Game" << std::endl;
+    }
+
+    Game(const Game&);
+    Game& operator =(const Game&);
+    
+    static Game *s_instance;
 };
 
 // Collision detection

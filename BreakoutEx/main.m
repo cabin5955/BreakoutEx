@@ -69,11 +69,11 @@ static bool onTouch(GLFMDisplay *display, int touch, GLFMTouchPhase phase, doubl
     app->needsRedraw = true;
     if(phase == GLFMTouchPhaseBegan)
     {
-        [wrapper TouchBegan];
+        [wrapper TouchBeganPosX:x PosY:y];
     }
     if(phase == GLFMTouchPhaseEnded)
     {
-        [wrapper TouchEnded];
+        [wrapper TouchEndedPos:x PosY:y];
     }
     if (phase != GLFMTouchPhaseBegan)
     {

@@ -10,9 +10,14 @@
 #include "game.hpp"
 #include <string.h>
 #include "glfm.h"
+#include "director.hpp"
+#include "game_start.hpp"
+#include "touch_dispatcher.hpp"
+#include "game_over.hpp"
+#include "game_pause.hpp"
+#include "color_renderer.hpp"
 
 @interface GameWrapper (){
-    Game *game;
     NSString *preferPath;
 }
 @end
@@ -52,52 +57,83 @@ bool IsDoubleClick ()
     }
 }
 
+extern ColorRenderer       *colorRenderer;
+
 @implementation GameWrapper
 
 - (void)InitWidth:(GLfloat) width Height:(GLfloat) height{
     
     preferPath = [NSString stringWithFormat:@"%@/",[[NSBundle mainBundle] bundlePath]];
     const char* fileName = [preferPath cStringUsingEncoding:1];
-    game = new Game(width,height);
-    strcpy(game->preferPath, fileName);
-    game->Init();
+    
+    strcpy(GameStart::GetInstance()->preferPath, fileName);
+    GameStart::GetInstance()->Init(width,height);
+    
+    strcpy(GameOver::GetInstance()->preferPath, fileName);
+    GameOver::GetInstance()->Init(width,height);
+    
+    strcpy(Game::GetInstance()->preferPath, fileName);
+    Game::GetInstance()->Init(width,height);
+    
+    strcpy(GamePause::GetInstance()->preferPath, fileName);
+    GamePause::GetInstance()->Init(width,height);
+    
+    Director::GetInstance()->SetRootScene(GameStart::GetInstance());
 }
 
 - (void)ProcessInput:(GLfloat) dt{
-    game->ProcessInput(dt);
+    
 }
 
 - (void)KeyboardInputWhithKey:(int) key Pressed:(char)pressed{
-    
+    Director::GetInstance()->GetTopScene()->KeyboardInput(key,pressed);
 }
 
-- (void)TouchBegan{
-    
-    if(IsDoubleClick())
+- (void)TouchBeganPosX:(double)x PosY:(double)y{
+    if (Game::GetInstance()->State == GAME_ACTIVE && IsDoubleClick())
     {
-        game->DoubleClickShoot();
+        Game::GetInstance()->DoubleClickShoot();
     }
+    TouchDispatcher *dispatcher = TouchDispatcher::get_instance();
+    dispatcher->touchesBegan(x, y);
 }
 
-- (void)TouchEnded{
-    
+- (void)TouchEndedPos:(double)x PosY:(double)y{
+    TouchDispatcher *dispatcher = TouchDispatcher::get_instance();
+    dispatcher->touchesEnded(x, y);
 }
 
 - (void)TouchMoveOffsetX:(double)x OffsetY:(double)y
 {
-    game->MouseMotionOffset(x, y);
+    Director::GetInstance()->GetTopScene()->MouseMotionOffset(x, y);
 }
 
 - (void)Update:(GLfloat)dt{
-    game->Update(dt);
+    std::vector<IScene*> scenes = Director::GetInstance()->GetAllScenes();
+    for(int i = 0; i < scenes.size();i++)
+    {
+        scenes[i]->Update(dt);
+    }
 }
 
 - (void)Render{
-    game->Render();
+    std::vector<IScene*> scenes = Director::GetInstance()->GetAllScenes();
+    for(int i = 0; i < scenes.size();i++)
+    {
+        if(i>0){
+            colorRenderer->DrawColor(glm::vec4(0,0,0,0.75f), glm::vec2(0, 0), glm::vec2(1536, 2048));
+        }
+        scenes[i]->Render();
+    }
 }
+
 - (void)Realease
 {
-    
+    std::vector<IScene*> scenes = Director::GetInstance()->GetAllScenes();
+    for(int i = 0; i < scenes.size();i++)
+    {
+        scenes[i]->Release();
+    }
 }
 
 @end

@@ -9,13 +9,16 @@
 #include "resource_manager.hpp"
 #include "sprite_renderer.hpp"
 #include "text_renderer.hpp"
-
 #include "game_level.hpp"
 #include "ball_object.hpp"
 #include "particle_generator.hpp"
 #include "post_processor.hpp"
-
 #include "SimpleAudioEngine.h"
+#include "button.hpp"
+#include "touch_dispatcher.hpp"
+#include "director.hpp"
+#include "game_pause.hpp"
+#include "game_over.hpp"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -28,6 +31,7 @@ BallObject          *Ball;
 SpriteObject        *Player;
 ParticleGenerator   *Particles;
 PostProcessor       *Effects;
+Button              *PauseButton;
 
 GLfloat             ShakeTime = 0.0f;
 
@@ -61,19 +65,18 @@ const GLchar *Game::FullPath(GLchar* des,const GLchar *src)
     return des;
 }
 
-Game::Game(GLuint width, GLuint height)
-    : State(GAME_ACTIVE), Keys(), Width(width), Height(height)
-{
-
+void PauseBtnOnClick() {
+    printf("pause btn click \n");
+    Director::GetInstance()->PushScene(GamePause::GetInstance());
 }
 
-Game::~Game()
-{
+Game* Game::s_instance = nullptr;
 
-}
-
-void Game::Init()
+void Game::Init(unsigned int width,unsigned int height)
 {
+    this->Width = width;
+    this->Height = height;
+    
     // 加载着色器
     char vs[1024] = {0};
     char fs[1024] = {0};
@@ -156,12 +159,34 @@ void Game::Init()
     Effects = new PostProcessor(ResourceManager::GetShader("postprocessing"), this->Width*2, this->Height*2);
     this->Lives = 3;
     
+    PauseButton = new Button(this,glm::vec2(360, 10.0f),
+                              glm::vec2(24,24),
+                              ResourceManager::GetTexture("ui_btn_pause"),
+                              PauseBtnOnClick);
+    
     SimpleAudioEngine::sharedEngine()->preloadEffect("solid.wav");
     SimpleAudioEngine::sharedEngine()->preloadEffect("bleep.wav");
     SimpleAudioEngine::sharedEngine()->preloadEffect("bleep2.wav");
     SimpleAudioEngine::sharedEngine()->preloadEffect("powerup.wav");
     SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic("breakout.wav");
     SimpleAudioEngine::sharedEngine()->playBackgroundMusic("breakout.wav", true);
+}
+
+void Game::OnEnter(){
+    this->State = GAME_ACTIVE;
+}
+
+void Game::OnExit(){
+    
+}
+
+void Game::Release()
+{
+    delete Renderer;
+    delete Ball;
+    delete Player;
+    delete Particles;
+    delete Effects;
 }
 
 void Game::Update(GLfloat dt)
@@ -192,7 +217,7 @@ void Game::Update(GLfloat dt)
             this->ResetLevel();
             this->State = GAME_MENU;
             SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-            //Director::GetInstance()->PushScene(GameOver::GetInstance());
+            Director::GetInstance()->PushScene(GameOver::GetInstance());
         }
         this->ResetPlayer();
     }
@@ -222,8 +247,7 @@ void Game::DoubleClickShoot()
     }
 }
 
-
-void Game::ProcessInput(GLfloat dt)
+void Game::KeyboardInput(int virtual_key, char pressed)
 {
 
 }
@@ -268,11 +292,13 @@ void Game::Render()
         // Render postprocessing quad
         Effects->Render(this->deltaTime);
         
+        PauseButton->Draw(*Renderer);
+        
         Text->RenderText(L"生命值", 0, 10, 1.5f, glm::vec3(1.0f,1.0f,1.0f));
         std::stringstream ss; ss << this->Lives;
         Text->RenderText("Live:"+ss.str(), 200.0f, 10.0f, 1.5f, glm::vec3(1.0f,1.0f,1.0f));
     }
-    
+    /*
     if (this->State == GAME_MENU)
     {
         Text->RenderText("Double click to start", 100.0f, this->Height / 2.0f - 40.0f, 2.0f);
@@ -283,6 +309,7 @@ void Game::Render()
         Text->RenderText("You WON!!!", 100.0f, this->Height / 2.0f - 40.0f, 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
         Text->RenderText("Double click to start", 100.0f, this->Height / 2.0f + 40, 2.0f, glm::vec3(1.0f, 1.0f, 0.0f));
     }
+    */
 }
 
 void Game::ResetLevel()
