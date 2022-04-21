@@ -9,55 +9,80 @@
 #include "game_wrapper.h"
 #include "game.hpp"
 #include <string.h>
-#include "glfm.h"
 #include "director.hpp"
 #include "game_start.hpp"
 #include "touch_dispatcher.hpp"
 #include "game_over.hpp"
 #include "game_pause.hpp"
 #include "color_renderer.hpp"
+#include "global.hpp"
 
 @interface GameWrapper (){
     NSString *preferPath;
 }
 @end
 
-bool IsDoubleClick ()
-{
-    static double LastClickTicks = 0;
-    double CurrentClickTicks;
+ColorRenderer *gw_colorRenderer;
 
-    /* First time this function is called, LastClickTicks
-    has not been initialised yet. */
-    if (LastClickTicks == 0)
-    {
-        LastClickTicks = glfmGetTime ();
-        return false;
-    }
-    else
-    {
-        CurrentClickTicks = glfmGetTime ();
+void CommonInit(){
+    char vs[1024] = {0};
+    char fs[1024] = {0};
+    char des[1024] = {0};
+    
+    ResourceManager::LoadShader(Global::ResFullPath(vs,"sprite.vs"),Global::ResFullPath(fs,"sprite.fs"),
+                                nullptr, "sprite");
+    
+    memset(vs, 0, sizeof(vs));memset(fs, 0, sizeof(fs));
+    ResourceManager::LoadShader(Global::ResFullPath(vs,"particle.vs"), Global::ResFullPath(fs,"particle.fs"),
+                                nullptr, "particle");
+    
+    memset(vs, 0, sizeof(vs));memset(fs, 0, sizeof(fs));
+    ResourceManager::LoadShader(Global::ResFullPath(vs,"post_processing.vs"), Global::ResFullPath(fs,"post_processing.fs"),
+                                nullptr, "postprocessing");
+    
+    memset(vs, 0, sizeof(vs));memset(fs, 0, sizeof(fs));
+    ResourceManager::LoadShader(Global::ResFullPath(vs,"text_2d.vs"),Global::ResFullPath(fs,"text_2d.fs"),
+                                nullptr, "text");
+    
+    memset(vs, 0, sizeof(vs));memset(fs, 0, sizeof(fs));
+    ResourceManager::LoadShader(Global::ResFullPath(vs,"mesh.vs"), Global::ResFullPath(fs,"mesh.fs"),
+                                nullptr, "mesh");
+    
+    memset(vs, 0, sizeof(vs));memset(fs, 0, sizeof(fs));
+    ResourceManager::LoadShader(Global::ResFullPath(vs,"cube.vs"), Global::ResFullPath(fs,"cube.fs"),
+                                nullptr, "cube");
+    
+    memset(vs, 0, sizeof(vs));memset(fs, 0, sizeof(fs));
+    ResourceManager::LoadShader(Global::ResFullPath(vs,"mulight.vs"), Global::ResFullPath(fs,"mulight.fs"),
+                                nullptr, "mulight");
+    
+    ResourceManager::LoadShader(Global::ResFullPath(vs,"color.vs"), Global::ResFullPath(fs,"color.fs"),
+                                nullptr, "color");
+    
+    ResourceManager::LoadShader(Global::ResFullPath(vs,"ui.vs"), Global::ResFullPath(fs,"ui.fs"),
+                                nullptr, "ui");
+    
+    ResourceManager::LoadShader(Global::ResFullPath(vs,"sprite.vs"),Global::ResFullPath(fs,"sprite.fs"),
+                                nullptr, "tilemap");
+    
+    ResourceManager::LoadShader(Global::ResFullPath(vs,"b2points.vs"), Global::ResFullPath(fs,"b2points.fs"),
+                                nullptr, "b2points");
+    
+    ResourceManager::LoadShader(Global::ResFullPath(vs,"b2lines.vs"), Global::ResFullPath(fs,"b2lines.fs"),
+                                nullptr, "b2lines");
 
-        /* If the period between the two clicks is smaller
-        or equal to a pre-defined number, we report a
-        DoubleClick event. */
-        double sub = CurrentClickTicks - LastClickTicks;
-        if ( sub <= 0.4f)
-        {
-            /* Update LastClickTicks and signal a DoubleClick. */
-
-            LastClickTicks = CurrentClickTicks;
-            return true;
-        }
-
-        /* Update LastClickTicks and signal a SingleClick. */
-
-        LastClickTicks = CurrentClickTicks;
-        return false;
-    }
+    ResourceManager::LoadShader(Global::ResFullPath(vs,"b2lines.vs"), Global::ResFullPath(fs,"b2lines.fs"),
+                                nullptr, "b2triangles");
+    
+    // 加载纹理
+    ResourceManager::LoadTexture(Global::ResFullPath(des,"background.jpg"), GL_FALSE, "background");
+    ResourceManager::LoadTexture(Global::ResFullPath(des,"awesomeface.png"), GL_TRUE, "face");
+    
+    ResourceManager::LoadTexture(Global::ResFullPath(des,"zaitiaozhan.png"), GL_FALSE, "ui_btn_replay");
+    ResourceManager::LoadTexture(Global::ResFullPath(des, "textureMask.png"), GL_TRUE, "mask");
+    ResourceManager::LoadTexture(Global::ResFullPath(des, "arrow.png"), GL_TRUE, "arrow");
+    
 }
-
-extern ColorRenderer       *colorRenderer;
 
 @implementation GameWrapper
 
@@ -66,19 +91,27 @@ extern ColorRenderer       *colorRenderer;
     preferPath = [NSString stringWithFormat:@"%@/",[[NSBundle mainBundle] bundlePath]];
     const char* fileName = [preferPath cStringUsingEncoding:1];
     
+    memset(Global::RES_PATH, 0, sizeof(Global::RES_PATH));
+    strcpy(Global::RES_PATH,fileName);
+    Global::ScreenWidth = width;
+    Global::ScreenHeight = height;
+    CommonInit();
+    
     strcpy(GameStart::GetInstance()->preferPath, fileName);
     GameStart::GetInstance()->Init(width,height);
     
     strcpy(GameOver::GetInstance()->preferPath, fileName);
     GameOver::GetInstance()->Init(width,height);
     
-    strcpy(Game::GetInstance()->preferPath, fileName);
     Game::GetInstance()->Init(width,height);
     
     strcpy(GamePause::GetInstance()->preferPath, fileName);
     GamePause::GetInstance()->Init(width,height);
     
     Director::GetInstance()->SetRootScene(GameStart::GetInstance());
+    
+    Shader colorShader = ResourceManager::GetShader("color");
+    gw_colorRenderer = new ColorRenderer(colorShader);
 }
 
 - (void)ProcessInput:(GLfloat) dt{
@@ -90,25 +123,28 @@ extern ColorRenderer       *colorRenderer;
 }
 
 - (void)TouchBeganPosX:(double)x PosY:(double)y{
-    if (Game::GetInstance()->State == GAME_ACTIVE && IsDoubleClick())
-    {
-        Game::GetInstance()->DoubleClickShoot();
-    }
     TouchDispatcher *dispatcher = TouchDispatcher::get_instance();
     dispatcher->touchesBegan(x, y);
 }
 
-- (void)TouchEndedPos:(double)x PosY:(double)y{
+- (void)TouchEndedPosX:(double)x PosY:(double)y{
     TouchDispatcher *dispatcher = TouchDispatcher::get_instance();
     dispatcher->touchesEnded(x, y);
 }
 
 - (void)TouchMoveOffsetX:(double)x OffsetY:(double)y
 {
-    Director::GetInstance()->GetTopScene()->MouseMotionOffset(x, y);
+    TouchDispatcher *dispatcher = TouchDispatcher::get_instance();
+    dispatcher->touchesMovedOffset(x, y);
+}
+
+- (void)TouchMovedPosX:(double)x PosY:(double)y{
+    TouchDispatcher *dispatcher = TouchDispatcher::get_instance();
+    dispatcher->touchesMoved(x, y);
 }
 
 - (void)Update:(GLfloat)dt{
+    Global::UpdateFrameTime();
     std::vector<IScene*> scenes = Director::GetInstance()->GetAllScenes();
     for(int i = 0; i < scenes.size();i++)
     {
@@ -120,8 +156,12 @@ extern ColorRenderer       *colorRenderer;
     std::vector<IScene*> scenes = Director::GetInstance()->GetAllScenes();
     for(int i = 0; i < scenes.size();i++)
     {
-        if(i>0){
-            colorRenderer->DrawColor(glm::vec4(0,0,0,0.75f), glm::vec2(0, 0), glm::vec2(1536, 2048));
+        if(i>0)
+        {
+            Shader colorShader = ResourceManager::GetShader("color");
+            colorShader.use();
+            colorShader.setMat4("view", glm::mat4(1.0));
+            gw_colorRenderer->DrawColor({0,0,0,192}, glm::vec2(0, 0), glm::vec2(1536, 2048));
         }
         scenes[i]->Render();
     }

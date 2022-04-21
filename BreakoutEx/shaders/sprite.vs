@@ -4,11 +4,22 @@ layout(location = 0) in vec4 a_position;
 out vec2 TexCoords;
 
 uniform mat4 model;
-// note that we're omitting the view matrix; the view never changes so we basically have an identity view matrix and can therefore omit it.
+uniform mat4 view;
 uniform mat4 projection;
+uniform int flipx;
+uniform int flipy;
 
 void main()
 {
-    TexCoords = a_position.zw;
-    gl_Position = projection * model * vec4(a_position.xy, 0.0, 1.0);
+    float u = a_position.z;
+    float v = a_position.w;
+    
+    if(flipx == 1)
+        u = 1.0 - a_position.z;
+    
+    if(flipy == 1)
+        v = 1.0 - a_position.w;
+    
+    TexCoords = vec2(u,v);
+    gl_Position = projection * view * model * vec4(a_position.xy, 0.0, 1.0);
 }

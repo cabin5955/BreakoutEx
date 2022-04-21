@@ -13,7 +13,8 @@
 - (void)KeyboardInputWhithKey:(int) key Pressed:(char)pressed;
 - (void)TouchMoveOffsetX:(double)x OffsetY:(double)y;
 - (void)TouchBeganPosX:(double)x PosY:(double)y;
-- (void)TouchEndedPos:(double)x PosY:(double)y;
+- (void)TouchEndedPosX:(double)x PosY:(double)y;
+- (void)TouchMovedPosX:(double)x PosY:(double)y;
 - (void)Update:(GLfloat)dt;
 - (void)Render;
 - (void)Realease;

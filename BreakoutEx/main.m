@@ -49,7 +49,7 @@ void glfmMain(GLFMDisplay *display) {
     glfmSetDisplayConfig(display,
                          GLFMRenderingAPIOpenGLES3,
                          GLFMColorFormatRGBA8888,
-                         GLFMDepthFormatNone,
+                         GLFMDepthFormat16,
                          GLFMStencilFormatNone,
                          GLFMMultisampleNone);
     glfmSetUserData(display, app);
@@ -71,10 +71,15 @@ static bool onTouch(GLFMDisplay *display, int touch, GLFMTouchPhase phase, doubl
     {
         [wrapper TouchBeganPosX:x PosY:y];
     }
-    if(phase == GLFMTouchPhaseEnded)
+    else if(phase == GLFMTouchPhaseEnded)
     {
-        [wrapper TouchEndedPos:x PosY:y];
+        [wrapper TouchEndedPosX:x PosY:y];
     }
+    else if(phase == GLFMTouchPhaseMoved)
+    {
+        [wrapper TouchMovedPosX:x PosY:y];
+    }
+    
     if (phase != GLFMTouchPhaseBegan)
     {
         int width, height;
